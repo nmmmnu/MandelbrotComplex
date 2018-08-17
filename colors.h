@@ -17,8 +17,8 @@ public:
 	constexpr uint32_t operator()(uint32_t const a) const{
 		if (a == maxInput)
 			return 0;
-
-		return uint32_t(scale * a);
+		else
+			return uint32_t(scale * a);
 	}
 };
 
@@ -39,13 +39,13 @@ public:
 
 
 class CyclicColor{
-	constexpr static uint32_t MAX_COLORS = 256;
-	constexpr static uint32_t CYCLES = 64;
-	constexpr static uint32_t SCALE  = MAX_COLORS / CYCLES;
+	constexpr static uint32_t MAX_COLORS	= 256;
+	constexpr static uint32_t MASK		= 0x3F;
+	constexpr static uint32_t SCALE		= MAX_COLORS / MASK;
 
 public:
 	constexpr uint32_t operator()(uint32_t const a) const{
-		return (a % CYCLES) * SCALE;
+		return (a & MASK) * SCALE;
 	}
 };
 
