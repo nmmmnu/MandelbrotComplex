@@ -1,5 +1,5 @@
-#ifndef GRAPHIC_H_
-#define GRAPHIC_H_
+#ifndef CANVAS_H_
+#define CANVAS_H_
 
 #include <cstdint>
 #include <cstdio>

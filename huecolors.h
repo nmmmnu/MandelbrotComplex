@@ -6,17 +6,16 @@
 class HUEColor{
 	constexpr inline static HUETable ht{};
 
-	using RGB = HUETable::RGB<uint8_t>;
+	using RGB = HUETable::RGB;
 
 	RGB		BLACK{ 0, 0, 0 };
-	uint32_t	maxInput;
+	uint32_t	max;
 
 public:
-	constexpr HUEColor(uint32_t const maxInput) :
-				maxInput(maxInput){}
+	constexpr HUEColor(uint32_t const max) : max(max){}
 
 	constexpr const RGB &operator()(uint32_t const a) const{
-		if (a == maxInput)
+		if (a == max)
 			return BLACK;
 		else
 			return ht[a % ht.size()];
@@ -24,5 +23,4 @@ public:
 };
 
 #endif
-
 

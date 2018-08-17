@@ -66,7 +66,7 @@ void mandelbrot(const Canvas &canvas, uint16_t const iterations, const MyFractal
 			canvas.plot(i);
 		}
 
-		printf("\n");
+		canvas.endln();
 	}
 
 	canvas.foot();
@@ -88,6 +88,6 @@ constexpr MonochromeCanvas<CyclicColor>	C_CYCLIC	{ WIDTH, HEIGHT			};
 constexpr RGBCanvas<HUEColor>		C_HUE		{ WIDTH, HEIGHT, ITERATIONS	};
 
 int main(){
-	mandelbrot(C_CYCLIC, ITERATIONS, MB_ELEPHANT_VALLEY);
+	mandelbrot(C_HUE, ITERATIONS, MB_ELEPHANT_VALLEY);
 }
 
