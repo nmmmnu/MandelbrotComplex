@@ -1,7 +1,7 @@
 #include "complex.h"
 
 #include "colors.h"
-#include "huecolors.h"
+#include "gradientcolors.h"
 #include "canvas.h"
 
 using MyComplex = ComplexFloat;
@@ -86,8 +86,9 @@ constexpr MonochromeCanvas<NormalColor>	C_NORMAL	{ WIDTH, HEIGHT, ITERATIONS	};
 constexpr MonochromeCanvas<CosmosColor>	C_COSMOS	{ WIDTH, HEIGHT			};
 constexpr MonochromeCanvas<CyclicColor>	C_CYCLIC	{ WIDTH, HEIGHT			};
 constexpr RGBCanvas<HUEColor>		C_HUE		{ WIDTH, HEIGHT, ITERATIONS	};
+constexpr RGBCanvas<ThreeColor>		C_FIRE		{ WIDTH, HEIGHT, ITERATIONS	};
 
 int main(){
-	mandelbrot(C_HUE, ITERATIONS, MB_ELEPHANT_VALLEY);
+	mandelbrot(C_FIRE, ITERATIONS, MB_ELEPHANT_VALLEY);
 }
 

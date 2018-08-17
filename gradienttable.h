@@ -1,10 +1,10 @@
-#ifndef HUI_TABLE_H_
-#define HUI_TABLE_H_
+#ifndef GRADIENT_TABLE_H_
+#define GRADIENT_TABLE_H_
 
 #include <cstdint>
 #include <cstddef>
 
-namespace huetable_impl_{
+namespace gradient_table_impl_{
 	template<typename T>
 	struct RGB_t{
 		T r;
@@ -40,9 +40,9 @@ struct HUEGradient{
 	constexpr static size_t		GROUP_SIZE	= SIZE / GROUPS;
 
 	constexpr static uint8_t	M		= 255;
-	constexpr static double		R		= M / double{ SIZE / GROUPS };
+	constexpr static double		R		= M / double{ GROUP_SIZE };
 
-	constexpr inline static huetable_impl_::ColorTracker data[] = {
+	constexpr inline static gradient_table_impl_::ColorTracker data[] = {
 		{ { M, 0, 0 }, {  0, +R,  0 } },	//   0 to  60
 		{ { M, M, 0 }, { -R,  0,  0 } },	//  60 to 120
 		{ { 0, M, 0 }, {  0,  0, +R } },	// 120 to 180
@@ -57,7 +57,7 @@ struct HUEGradient{
 template<class Gradient>
 class GradientTable{
 public:
-	using RGB = huetable_impl_::RGB_t<uint8_t>;
+	using RGB = gradient_table_impl_::RGB_t<uint8_t>;
 
 private:
 	using G = Gradient;
@@ -70,7 +70,7 @@ public:
 
 		for(const auto &ct : G::data)
 			for(size_t i = 0; i < G::GROUP_SIZE; ++i)
-				data[id++] = huetable_impl_::incChannel(ct.value, ct.inc, i);
+				data[id++] = gradient_table_impl_::incChannel(ct.value, ct.inc, i);
 	}
 
 	constexpr const auto &operator[](size_t const i) const{
@@ -81,8 +81,6 @@ public:
 		return G::SIZE;
 	}
 };
-
-using HUETable = GradientTable<HUEGradient>;
 
 #endif
 
