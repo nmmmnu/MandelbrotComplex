@@ -12,11 +12,6 @@ namespace gradient_table_impl_{
 		T b;
 	};
 
-	struct ColorTracker{
-		RGB_t<uint8_t>	value;
-		RGB_t<double>	inc;
-	};
-
 	// ------------------------------
 
 	constexpr uint8_t incChannel(uint8_t const value, double const inc, size_t const i){
@@ -32,7 +27,17 @@ namespace gradient_table_impl_{
 	}
 } // huetable_impl_
 
+// ------------------------------
 
+struct GradientTracker{
+	template<typename T>
+	using RGB_t = gradient_table_impl_::RGB_t<T>;
+
+	RGB_t<uint8_t>	value;
+	RGB_t<double>	inc;
+};
+
+// ------------------------------
 
 struct HUEGradient{
 	constexpr static size_t		GROUPS		= 6;
@@ -42,7 +47,7 @@ struct HUEGradient{
 	constexpr static uint8_t	M		= 255;
 	constexpr static double		R		= M / double{ GROUP_SIZE };
 
-	constexpr inline static gradient_table_impl_::ColorTracker data[] = {
+	constexpr inline static GradientTracker data[] = {
 		{ { M, 0, 0 }, {  0, +R,  0 } },	//   0 to  60
 		{ { M, M, 0 }, { -R,  0,  0 } },	//  60 to 120
 		{ { 0, M, 0 }, {  0,  0, +R } },	// 120 to 180
@@ -52,7 +57,7 @@ struct HUEGradient{
 	};
 };
 
-
+// ------------------------------
 
 template<class Gradient>
 class GradientTable{

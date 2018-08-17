@@ -35,10 +35,10 @@ struct ThreeGradient{
 	constexpr static uint8_t	M		= 255;
 	constexpr static double		R		= M / double{ GROUP_SIZE };
 
-	constexpr inline static gradient_table_impl_::ColorTracker data[] = {
-		{ { 0, 0, M }, { +R,   0, -R } },	//   0 to  64
-		{ { M, 0, 0 }, { -R,  +R,  0 } },	//  64 to 128
-		{ { 0, M, 0 }, {  0,  -R, +R } },	//  64 to 128
+	constexpr inline static GradientTracker data[] = {
+		{ { M, 0, 0 }, { -R, +R,  0 } },
+		{ { 0, M, 0 }, {  0, -R, +R } },
+		{ { 0, 0, M }, { +R,  0, -R } },
 	};
 };
 
