@@ -6,14 +6,13 @@
 
 template<typename T>
 struct Complex{
-	using type = T;
+	static_assert(std::is_floating_point<T>::value, "T must be floating point");
 
-	T r;
-	T i;
+	using type = T;
 
 	// ------------------------
 
-	constexpr Complex(T const r, T const i) : r(r), i(i){};
+	constexpr Complex(T const r, T const i) : data{ r, i }{};
 
 	constexpr Complex(T const r) : Complex(r, 0){};
 
@@ -21,45 +20,55 @@ struct Complex{
 
 	// ------------------------
 
-
-	constexpr T real() const{
-		return r;
+	T &operator[](int const n){
+		return data[n];
 	}
 
-	constexpr T immaginery() const{
-		return i;
+	constexpr T operator[](int const n) const{
+		return data[n];
 	}
 
-	// ------------------------
-
-	static_assert(std::is_floating_point<T>::value, "T must be floating point");
+private:
+	T data[2];
 };
+
+// ------------------------
+
+template<int I, typename T>
+constexpr T get(const Complex<T> &a){
+	return a[I];
+}
+
+template<int I, typename T>
+T &get(Complex<T> &a){
+	return a[I];
+}
 
 // ------------------------
 
 template<typename T>
 constexpr bool operator==(const Complex<T> &a, const Complex<T> &b){
-	return a.r == b.r && a.i == b.i;
+	return a[0] == b[0] && a[1] == b[1];
 }
 
 template<typename T>
 constexpr Complex<T> operator+(const Complex<T> &a, const Complex<T> &b){
-	return { a.r + b.r, a.i + b.i };
+	return { a[0] + b[0], a[1] + b[1] };
 }
 
 template<typename T>
 constexpr Complex<T> operator-(const Complex<T> &a, const Complex<T> &b){
-	return { a.r - b.r, a.i - b.i };
+	return { a[0] - b[0], a[1] - b[1] };
 }
 
 template<typename T>
 constexpr Complex<T> operator*(const Complex<T> &a, const Complex<T> &b){
-	// (a.r + a.i) * (b.r + b.i)
-	// => a.r * b.r + a.i * b.r + a.r * b.i + a.i * b.i
-	// => (a.r * b.r - a.i * b.i) + (a.i * b.r + a.r * b.i)
+	// (a[0] + a[1]) * (b[0] + b[1])
+	// => a[0] * b[0] + a[1] * b[0] + a[0] * b[1] + a[1] * b[1]
+	// => (a[0] * b[0] - a[1] * b[1]) + (a[1] * b[0] + a[0] * b[1])
 	return {
-		a.r * b.r - a.i * b.i,
-		a.i * b.r + a.r * b.i
+		a[0] * b[0] - a[1] * b[1],
+		a[1] * b[0] + a[0] * b[1]
 	};
 }
 
@@ -67,7 +76,7 @@ constexpr Complex<T> operator*(const Complex<T> &a, const Complex<T> &b){
 
 template<typename T>
 constexpr Complex<T> operator-(const Complex<T> &a){
-	return { -a.r, -a.i };
+	return { -a[0], -a[1] };
 }
 
 template<typename T>
@@ -81,7 +90,7 @@ template<typename T>
 constexpr T abs2(const Complex<T> &a){
 	// Pytagoras
 	// a2 + b2 = c2
-	return a.r * a.r + a.i * a.i;
+	return a[0] * a[0] + a[1] * a[1];
 }
 
 template<typename T>
