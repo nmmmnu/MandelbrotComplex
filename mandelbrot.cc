@@ -1,10 +1,11 @@
 #include "complex.h"
+#include "quaternion.h"
 
 #include "colors.h"
 #include "gradientcolors.h"
 #include "canvas.h"
 
-using MyComplex = ComplexFloat;
+using MyComplex = QuaternionFloat;
 
 
 template<typename T>
@@ -43,14 +44,16 @@ using MyFractalPos = FractalPos<MyComplex::type>;
 
 
 template<class Canvas>
-void mandelbrot(const Canvas &canvas, uint16_t const iterations, const MyFractalPos& pos){
+void mandelbrot(const Canvas &canvas, uint16_t const iterations, const MyFractalPos& pos, float const cross){
 	canvas.head();
 
 	for(uint32_t y = 0; y < canvas.height; ++y){
 		for(uint32_t x = 0; x < canvas.width; ++x){
 			const MyComplex c = {
 				translate(x, canvas.width,  pos.min_x, pos.max_x),
-				translate(y, canvas.height, pos.min_y, pos.max_y)
+				translate(y, canvas.height, pos.min_y, pos.max_y),
+				cross,
+				0
 			};
 
 			MyComplex z = 0; // Z0
@@ -59,7 +62,7 @@ void mandelbrot(const Canvas &canvas, uint16_t const iterations, const MyFractal
 			for(; i < iterations; ++i){
 				z = z * z + c;
 
-				if (abs2(z) > 4)
+				if (abs2(z) > MyComplex::SIZE)
 					break;
 			}
 
@@ -88,7 +91,9 @@ constexpr MonochromeCanvas<CyclicColor>	C_CYCLIC	{ WIDTH, HEIGHT			};
 constexpr RGBCanvas<HUEColor>		C_HUE		{ WIDTH, HEIGHT, ITERATIONS	};
 constexpr RGBCanvas<ThreeColor>		C_FIRE		{ WIDTH, HEIGHT, ITERATIONS	};
 
-int main(){
-	mandelbrot(C_FIRE, ITERATIONS, MB_ELEPHANT_VALLEY);
+int main(int argc, char **argv){
+	float const cross  = argc < 2 ? 0 : (float) atof(argv[1]);
+
+	mandelbrot(C_FIRE, ITERATIONS, MB_FULL, cross);
 }
 

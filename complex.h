@@ -10,11 +10,13 @@ struct Complex{
 
 	using type = T;
 
+	constexpr static unsigned char SIZE = 2;
+
 	// ------------------------
 
-	constexpr Complex(T const r, T const i) : data{ r, i }{};
+	constexpr Complex(T const a0, T const a1) : data{ a0, a1 }{};
 
-	constexpr Complex(T const r) : Complex(r, 0){};
+	constexpr Complex(T const a0) : Complex(a0, 0){};
 
 	constexpr Complex() : Complex(0, 0){};
 
@@ -29,7 +31,7 @@ struct Complex{
 	}
 
 private:
-	T data[2];
+	T data[SIZE];
 };
 
 // ------------------------
